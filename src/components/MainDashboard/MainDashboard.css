@@ -1,0 +1,835 @@
+.main-dashboard {
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+.main-dashboard .dash-container {
+    position: relative;
+    width: 100%;
+}
+.navigation {
+    position: fixed;
+    width: 300px;
+    height: 100%;
+    background: #fff;
+    transition: 0.5s;
+    overflow: auto;
+}
+.navigation.active {
+    width: 90px;
+    background: #fff7f5;
+}
+.navigation ul {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding-left: 20px;
+}
+.navigation ul li {
+    position: relative;
+    width: 100%;
+    list-style: none;
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+}
+.navigation ul li:hover {
+    background: #fff;
+}
+.navigation ul li:nth-child(1) {
+        padding-top: 10px;
+}
+.navigation ul li a {
+    position: relative;
+    display: block;
+    width: 100%;
+    display: flex;
+    text-decoration: none;
+    color: #000;
+}
+.navigation ul li:hover a {
+    color: #e529bc;
+
+}
+.navigation ul li a .icon {
+    position: relative;
+    display: block;
+    min-width: 60px;
+    height: 60px;
+    line-height: 70px;
+    text-align: center;
+}
+.navigation ul li a .icon .faIcon {
+    font-size: 1.75em;
+}
+.navigation ul li a .title {
+    position: relative;
+    display: block;
+    padding: 0 10px;
+    height: 60px;
+    line-height: 60px;
+    text-align: start;
+    white-space: nowrap;
+}
+/* curve outside  */
+/* .navigation ul li:hover a::before {
+    content: '';
+    position: absolute;
+    top: -50px;
+    right: 0;
+    width: 50px;
+    height: 50px;
+    background: transparent;
+    border-radius: 50%;
+    box-shadow: 35px 35px 0 10px #fff;
+    pointer-events: none; 
+}
+.navigation ul li:hover a::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: -50px;
+    width: 50px;
+    height: 50px;
+    background: transparent;
+    border-radius: 50%;
+    box-shadow: 35px -35px 0 10px #fff;
+    pointer-events: none; 
+} */
+/* main  */
+.main {
+    position: absolute;
+    width: calc(100% - 300px);
+    left: 300px;
+    min-height: 100vh;
+    background: #fff;
+    transition: 0.5s;
+}
+.topbar {
+    width: 100%;
+    height: 57px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+}
+.main.active {
+    width: calc(100% - 90px);
+    left: 90px;
+}
+.toggle {
+    position: relative;
+    width: 28px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.5em;
+    cursor: pointer;
+
+}
+.toggle i {
+    font-size: 0.5em;
+    color: #494444;
+}
+.search {
+    position: relative;
+    width: 300px;
+}
+.search label {
+    position: relative;
+    width: 100%;
+}
+.search label input {
+    width: 100%;
+    height: 32px;
+    border-radius: 7px;
+    padding: 5px 20px;
+    font-size: 18px;
+    outline: none;
+    border: 1px solid #9090901a;
+    background-color: #FFF7F5;
+}
+.search label .faIcon {
+    position: absolute;
+    top: 6px;
+    right: 10px;
+    font-size: 1.2em;
+    color: #909090;
+    padding-right: 10px;
+}
+.search label .faIcon.left-side {
+    left: 10px;
+}
+.search.f-width {
+    width: 100%;
+}
+.search.f-width label input {
+    padding: 5px 37px;
+}
+.user {
+    position: relative;
+    width: 37px;
+    height: 37px;
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+}
+.user img {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.cardBox {
+    position: relative;
+    width: 100%;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 20px;
+}
+.cardBox .dash-card {
+    position: relative;
+    background: #FFE8FA;
+    padding: 15px;
+    border-radius: 20px;
+    display: flex;
+    justify-content: space-between;
+    box-shadow: 0 7px 25px rgba(0,0,0,0.08);
+}
+.cardBox .dash-card:nth-child(2){
+    background: #E9EAFE;
+}
+.cardBox .dash-card:nth-child(3){
+    background: #F6FDD3;
+}
+.cardBox .dash-card .numbers {
+    position: relative;
+    font-weight: 500;
+    font-size: 2em;
+    color: #2C1E25;
+}
+.cardBox .dash-card .cardName {
+    color: #999;
+    font-size: 1em;
+    margin-top: 5px;
+    font-weight: 700;
+}
+.cardBox .dash-card .iconBx {
+    font-size: 2em;
+    margin-right: 10px;
+    color: #000;
+}
+.cardBox .dash-card:hover {
+    background: #287bff;
+}
+.cardBox .dash-card:hover .numbers,
+.cardBox .dash-card:hover .cardName,
+.cardBox .dash-card:hover .iconBx {
+    color: #fff;
+}
+.card-dividing {
+    position: relative;
+    width: 100%;
+    padding: 20px;
+    display: grid;
+    /* justify-content: center; */
+    /* grid-template-columns: 1fr 2fr; */
+    grid-template-columns: 2fr 1fr;
+    grid-gap: 5px;
+}
+/* sales-analytics */
+.sales-analytics {
+    border: 1px solid #CBCAC9;
+    border-radius: 5px;
+    padding: 30px;
+    display: grid;
+    position: relative;
+    width: 100%;
+}
+.sales-analytics h6 {
+    color: #767ac8;
+    font-weight: 600;
+}
+.sales-analytics .chart-title {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 25px;
+}
+.sales-analytics .graphBox {
+    padding: 0;
+    min-height: 180px;
+}
+
+/* chartjs */
+.graphBox {
+    position: relative;
+    width: 100%;
+    padding: 20px;
+    display: grid;
+    justify-content: center;
+    /* grid-template-columns: 1fr 2fr; */
+    grid-template-columns: 1fr;
+    grid-gap: 30px;
+    min-height: 300px;
+}
+.graphBox .chartBox {
+    position: relative;
+    background: #fff;
+    padding: 20px;
+    width: 100%;
+    box-shadow: 0 7px 25px rgba(0,0,0,0.08);
+    border-radius: 20px;
+}
+.details {
+    position: relative;
+    width: 100%;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-gap: 30px;
+    /* margin-top: 10px; */
+}
+.details .recentOrders {
+    position: relative;
+    display: grid;
+    min-height: 500px;
+    background: #fff;
+    padding: 20px;
+    box-shadow: 0 7px 25px rgba(0,0,0,0.08);
+    border-radius: 20px;
+}
+.cardHeader {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+.cardHeader h2 {
+    font-weight: 600;
+    color: #287bff;
+}
+.view-all-btn {
+    position: relative;
+    padding: 5px 10px;
+    background: #6658dd;
+    text-decoration: none;
+    color: #fff !important;
+    border-radius: 6px;
+}
+.payment table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    border: 1px solid #EEE3EB;
+}
+.payment table thead td {
+    font-weight: 600 !important;
+    color: #000 !important;
+    background: #F8F9FE;
+    border: 1px solid #F8F9FE;;
+    border-bottom: 1px solid #EEE3EB;
+}
+.payment table tr:hover {
+    cursor: pointer;
+}
+.payment table tr {
+    color: #222;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+.payment table tbody tr:hover {
+    background: #FFE8FA;
+}
+.payment table tbody tr:hover td{
+    color: #000;
+    font-weight: 600;
+}
+.payment table tr td {
+    padding: 10px;
+    color: #909090;
+    font-weight: 400;
+    font-size: 15px;
+}
+.details .recentOrders table tr td:first-child {
+    text-align: start;
+}
+.details .recentOrders table tr td:last-child {
+    text-align: end;
+}
+.details .recentOrders table tr td:nth-child(2) {
+    text-align: end;
+}
+.details .recentOrders table tr td:nth-child(3) {
+    text-align: end;
+}
+.status.delivered {
+    padding: 2px 4px;
+    background: #8de02c;
+    color: #fff;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+}
+.status.pending {
+    padding: 2px 4px;
+    background: #f00;
+    color: #fff;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+}
+.status.return {
+    padding: 2px 4px;
+    background: #f9ca3f;
+    color: #fff;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+}
+.status.inprogress {
+    padding: 2px 4px;
+    background: #179517;
+    color: #fff;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+.recentCustomers {
+    position: relative;
+    display: grid;
+    min-height: 500px;
+    padding: 20px;
+    background: #fff;
+    box-shadow: 0 7px 25px rgba(0,0,0,0.08);
+    border-radius: 20px;
+}
+.recentCustomers .imgBx {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow:hidden;
+}
+.recentCustomers .imgBx img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.recentCustomers table tr:hover {
+    background: #287bff;
+    color: #fff;
+}
+.recentCustomers table tr td {
+    padding: 12px 10px;
+}
+.recentCustomers table tr td:nth-child(2) {
+    text-align: start;
+}
+.recentCustomers table tr td h4 {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.2em;
+}
+.recentCustomers table tr td h4 span {
+    font-size: 14px;
+    color: #999;
+}
+.recentCustomers table tr:hover {
+    background: #287bff;
+    color: #fff;
+}
+.recentCustomers table tr:hover td h4 span {
+    color: #fff;
+}
+/* some changes  */
+.navigation ul li:first-child:hover {
+    /* background: #287bff; */
+    color: #fff;
+}
+.navigation ul li:first-child:hover a {
+    color: #fff;
+}
+.navigation ul li:first-child:hover a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 0;
+    height: 0;
+    background: transparent;
+    border-radius: 50%;
+    box-shadow: 35px 35px 0 10px #fff;
+    pointer-events: none; 
+}
+.navigation ul li:first-child:hover a::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 0;
+    height: 0;
+    background: transparent;
+    border-radius: 50%;
+    box-shadow: 35px -35px 0 10px #fff;
+    pointer-events: none; 
+}
+.our-form-input {
+    display: block;
+    width: 100%;
+    padding: 7px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border: 3px solid #d3d3d3;
+    border-radius: 3px;
+}
+.deposit-master .our-form-input {
+    background: #d5d5d5;
+    color: black;
+}
+.delivery-section-mobile {
+    display: none;
+}
+
+/* RESPONSIVE  */
+@media (max-width: 991px) {
+    .navigation {
+        left: -300px;
+    }
+    .navigation.active {
+        left: 0;
+        width: 300px;
+    }
+    .main {
+        width: 100%;
+        left: 0;
+    }
+    .main.active {
+        left: 300px;
+    }
+    .cardBox{
+        grid-template-columns: repeat(2,1fr);
+    }
+    .search {
+        width: 200px;
+    }
+
+}
+@media (max-width: 768px) {
+    .graphBox {
+        grid-template-columns: 1fr;
+        height: auto;
+    }
+    .card-dividing {
+        grid-template-rows: 1fr 1fr;
+    }
+    .details {
+        grid-template-columns: repeat(1,1fr);
+    }
+    .recentOrders{
+        overflow-x: auto;
+    }
+    .status.inprogress {
+        white-space: nowrap;
+    }
+    .payment table {
+        overflow: auto;
+        display: block;
+    }
+    .delivery-section {
+        display: none;
+    }
+    .delivery-section-mobile {
+        display: block;
+    }
+}
+@media (max-width: 480px) {
+    .cardBox {
+        grid-template-columns: repeat(1,1fr);
+    }
+    .card-dividing {
+        grid-template-rows: 1fr 1fr;
+        grid-template-columns: none;
+    }
+    .cardHeader h2 {
+        font-size: 20px;
+    }
+    .user {
+        min-width: 40px;
+    }
+    .navigation {
+        width: 100%;
+        left: -100%;
+        z-index: 1000;
+    }
+    .navigation.active {
+        width: 100%;
+        left: 0;
+    }
+    .toggle {
+        z-index: 1000;
+    }
+
+
+    
+    .main.active .toggle {
+        position: fixed;
+        right: 0;
+        left: initial;
+        color: #fff;
+    }
+    .chartBox {
+        min-height: 250px;
+    }
+    .notify-box {
+        padding: 0 7px !important;
+    }
+    .topbar {
+        height: 70px;
+    }
+    .topbar .search {
+        display: none;
+    }
+
+}
+
+/* new added style  */
+logo-div {
+    width: 10px;
+    height: 15px;
+}
+.logo-div img {
+    width: 50%;
+}
+
+/* add admin  */
+.add-padding {
+    position: relative;
+    width: 100%;
+    padding: 20px;
+}
+.add-admin {
+    border: 1px solid #F0F0F2;
+    border-radius: 3px;
+    background-color: #FBFBFE;
+    padding: 5px 10px;
+    margin-top: 60px;
+}
+.admin-list {
+    padding: 5px 10px;
+}
+.admin-list table {
+    width: 100%;
+    margin-top: 10px;
+}
+.admin-added-section {
+    padding: 0 10px;
+}
+.add-admin-form {
+    background: #F9FAFF;
+    padding: 20px;
+}
+.add-admin-form label {
+    color: #838487;
+    font-size: 16px;
+    font-weight: 500;
+}
+.submitting-btn {
+    float: right;
+    margin: 50px 0;
+}
+.radio input {
+    margin: 0 10px;
+}
+.card-icon-box {
+    font-size: 2em;
+    margin-right: 10px;
+    color: #000;
+    padding: 0 20px;
+}
+.icon-tag {
+    height: 25px;
+    width: 25px;
+    background-color: #6658DD;
+    color: #fff;
+    border-radius: 50%;
+    display: inline-block;
+    padding: 10px;
+  }
+.css-qc6sy-singleValue,
+.css-tj5bde-Svg {
+    color: #7f6fe7 !important;
+}
+.payment-mode-box .css-qc6sy-singleValue {
+    color: #000 !important;
+    font-weight: 600;
+}
+.payment-mode-box .css-tj5bde-Svg {
+    color: #838487  !important;   
+}
+.topbar {
+    background: #ffffff;
+    border-bottom: 1px solid #f6eaea;
+    box-shadow: 0px 0px 2px 0px #ccc;
+}
+.user-details {
+    display: flex;
+    align-items: center;
+}
+.notify-box {
+    padding: 0 15px;
+}
+.notify-box i {
+    font-size: 24px;
+}
+.user-details h6 {
+    padding: 0 15px;
+}
+.admin-list table tbody tr td {
+    padding: 10px 0;
+}
+.admin-list table tbody tr td:nth-child(6):hover, 
+.admin-list table tbody tr td:nth-child(7):hover {
+    cursor: pointer;
+}
+.admin-list table tr td:first-child {
+    width: 10px;
+}
+.img-100 {
+    width: 100% !important;
+}
+.img-50 {
+    width: 50%;
+}
+.new-order-search .search {
+    width: 300px;
+    margin-left: 45px;
+}
+.filter-icon {
+    color: red;
+    background: #ffffff;
+    padding: 9px;
+    box-shadow: 1px 3px 3px 0px #ccc;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+}
+.new-order-section .payment table thead td, 
+.payment table thead td, 
+.add-staff-section .payment table thead td {
+    background: #FEF8F8 !important;
+}
+/* .page-link {
+    border: none !important;
+    color: #000 !important;
+}
+.page-link:hover {
+    background-color: #D95859 !important;
+    color: #fff !important;
+    border-radius: 50% !important;
+    border: none !important;
+} */
+.delivered {
+    color: #5dfd35;
+    font-weight: 700;
+}
+.pagination .page-item .page-link {
+    line-height: 1.25;
+    z-index: 3;
+    border: 0;
+    outline: 0;
+    font-size: .9rem;
+    color: #877373;
+    
+}
+.pagination .page-item.active .page-link {
+    color: #fff;
+    transition: all .2s linear;
+    box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);
+
+}
+.pagination.pagination-circle .page-item .page-link {
+    margin-right: 2px;
+    margin-left: 2px;
+}
+.pagination.pagination-circle .page-item.active .page-link {
+    border-radius: 50%;
+}
+.pagination.pg-blue .page-item.active .page-link {
+    background-color: #DE5859;
+}
+.page-item.disabled .page-link {
+    color: #dee2e6 !important;
+}
+.user-card {
+    display: flex;
+    align-items: center;
+    padding: 3px 6px;
+    box-shadow: 1px 2px 4px 2px #ccc;
+    border-radius: 4px;
+}
+.user-card h6 {
+    font-weight: 600;
+}
+.user-details .notify-box i ,
+.filter-box .notify-box i 
+{
+    display: inline-block;
+    border-radius: 60px;
+    box-shadow: 0px 3px 4px -1px #888;
+    padding: 0.3em 0.4em;
+}
+i.fa-solid.fa-filter.faIcon {
+    color: #f00;
+}
+.delivery-status-card {
+    color: #a4a4a4b0;
+    border-radius: 20px !important;
+}
+.delivery-status-card .table-body{
+    color: #353131b0;
+}
+.delivery-status-card:hover {
+    background-color: #FFF7F5 !important;
+}
+.delivery-status-card:hover .table-head{
+    color: #000;
+}
+i.circle-icon {
+    padding: 6px;
+    border-radius: 50%;
+    margin-left: 6px;
+    color: #f00;
+}
+.change-password-section .circle-icon {
+    color: #000;
+    padding: 5px 10px;
+}
+.change-password-section .topbar {
+    background-color: #F8F9FE;
+}
+/* password change style  */
+/* enable absolute positioning */
+.inner-addon { 
+    position: relative; 
+}
+
+/* style icon */
+.inner-addon .eyeicon {
+  position: absolute;
+  padding: 10px;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* align icon */
+.left-addon .eyeicon  { left:  0px;}
+.right-addon .eyeicon { right: 10px; z-index: 999;}
+
+/* add padding  */
+.left-addon input  { padding-left:  30px; }
+.right-addon input { padding-right: 30px; }
