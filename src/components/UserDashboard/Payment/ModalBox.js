@@ -13,7 +13,7 @@ const ModalBox = ({accountSelectHanlder}) => {
     const handleShow = () => setShow(true);
 
     useEffect(() => {
-        axios.get(`http://localhost:8009/api/v1/user`)
+        axios.get(`https://micro-finserv.herokuapp.com/api/v1/user`)
         .then(res => {
             setUsers(res.data.data)
         })

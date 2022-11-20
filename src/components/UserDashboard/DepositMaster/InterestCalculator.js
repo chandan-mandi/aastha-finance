@@ -186,7 +186,7 @@ const InterestCalculator = ({ userDetail }) => {
         }
         console.log("ins details", loan_data)
         const loading = toast.loading('Uploading...Please wait!')
-        axios.post(`http://localhost:8009/api/v1/account?id=${userDetail._id}`, loan_data)
+        axios.post(`https://micro-finserv.herokuapp.com/api/v1/account?id=${userDetail._id}`, loan_data)
             .then(res => {
                 if (res) {
                     console.log("from server: ",res.data)

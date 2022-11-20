@@ -24,7 +24,7 @@ const CashTransaction = () => {
     }
 
     useEffect(() => {
-        axios.get(`http://localhost:8009/api/v1/account/${selectAc}`)
+        axios.get(`https://micro-finserv.herokuapp.com/api/v1/account/${selectAc}`)
             .then(res => {
                 const data = res.data.data;
                 setInstallments(data.installments)
@@ -52,7 +52,7 @@ const CashTransaction = () => {
             remarks: data.remarks,
             collector: data.collector
         }
-        axios.patch(`http://localhost:8009/api/v1/account/${selectAc}`, cashCollection)
+        axios.patch(`https://micro-finserv.herokuapp.com/api/v1/account/${selectAc}`, cashCollection)
         .then(res => {
             console.log(res.data)
             if(res.data.status = 'success'){
@@ -269,7 +269,7 @@ const CashTransaction = () => {
                                     <thead>
                                         <div className='ms-2'>
                                             <h5>Name : {selectCustomer.name}</h5>
-                                            <h5>Address : {selectCustomer.address ? selectCustomer.address : "-"}</h5>
+                                            <h5>Address : {selectCustomer.full_address ? selectCustomer.full_address : "-"}</h5>
                                         </div>
                                         <tr style={{ fontWeight: "700", textAlign: 'center' }}>
                                             <td>Due Date</td>

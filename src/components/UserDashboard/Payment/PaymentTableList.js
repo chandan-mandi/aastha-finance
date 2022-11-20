@@ -91,7 +91,7 @@ const PaymentTableList = () => {
     const [customerDetails, setCustomerDetails] = useState([]);
 
     useEffect(() => {
-        axios.get(`http://localhost:8009/api/v1/user`)
+        axios.get(`https://micro-finserv.herokuapp.com/api/v1/user`)
             .then(res => {
                 const data = res.data.data;
                 setUserDetails(data)
@@ -104,7 +104,7 @@ const PaymentTableList = () => {
              userDetails.map(user => {
                 let fullDetails = [...user];
                 console.log(user.account_no)
-                axios.get(`http://localhost:8009/api/v1/account/${user.account_no}`)
+                axios.get(`https://micro-finserv.herokuapp.com/api/v1/account/${user.account_no}`)
                     .then(res => {
                         const accountDetail = res.data.data[0];
                         // console.log('ac detal', accountDetail)

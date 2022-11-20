@@ -97,7 +97,7 @@ const NewOrderTableList = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch(`http://localhost:8009/api/v1/user`)
+        fetch(`https://micro-finserv.herokuapp.com/api/v1/user`)
         .then(res => res.json())
         .then(data => {
             setUsers(data.data)
