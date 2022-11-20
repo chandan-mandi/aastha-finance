@@ -1,53 +1,122 @@
 import axios from 'axios';
-import React from 'react';
+import React, { useState } from 'react';
 import { Col, Row, Button } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import toast, { Toaster } from 'react-hot-toast';
 import swal from 'sweetalert';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCloudUploadAlt } from '@fortawesome/free-solid-svg-icons';
+import DatePicker from 'react-date-picker';
 
 
 
 const AddCarDetails = () => {
     const { register, handleSubmit, reset } = useForm();
-    const onSubmit = async data => {
-        if (!data.img[0]) {
+    const [photo, setPhoto] = useState("");
+    const [idProof, setIdProof] = useState("");
+    const [addressProof, setAddressProof] = useState("");
+    const [dob, setDOB] = useState();
+    const [openingDate, setOpeningDate] = useState(new Date());
+
+    const uploadFile = async (e, type) => {
+
+        const loading = toast.loading('Uploading...Please wait!')
+        console.log(e.target.files[0])
+        console.log('type', type)
+        if (!e.target.files[0]) {
             return toast.error('Please upload an image!');
         }
-        const loading = toast.loading('Uploading...Please wait!')
         let imageURL = "";
-        console.log(data.img[0])
-        if(data.img[0]){
+        console.log(e.target.files[0])
+        if (e.target.files[0]) {
             const imageData = new FormData();
             imageData.set('key', 'acb2d4c7a68ef1bf06d396d73adb600a')
-            imageData.append('image', data.img[0]);
+            imageData.append('image', e.target.files[0]);
             try {
                 const res = await axios.post("https://api.imgbb.com/1/upload", imageData);
                 console.log(res)
                 imageURL = res.data.data.display_url;
-                toast.dismiss(loading);
+                toast.success('Uploaded!', {
+                    id: loading,
+                });
+                // return imageURL;
             } catch (error) {
                 toast.dismiss(loading);
                 return toast.error('Failed to upload the image!');
             }
         }
-        const serviceInfo = {
-            name: data.name,
-            mileage: data.mileage,
-            price: data.price,
-            img: imageURL,
-            details: data.details
+        // setPhoto(imageURL);
+        if(type == "photo"){
+            setPhoto(imageURL)
         }
-        console.log(serviceInfo)
-        axios.post('https://safe-crag-22535.herokuapp.com/availableCars', serviceInfo)
+        if(type == "idProof"){
+            setIdProof(imageURL)
+        }
+        if(type == "addressProof"){
+            setAddressProof(imageURL)
+        }
+    }
+    const onSubmit = async (data) => {
+        if(!photo){
+            return toast.error(`Please upload your Photo!`);
+        }
+        if(!idProof){
+            return toast.error(`Please upload your id Proof!`);
+        }
+        if(!addressProof){
+            return toast.error(`Please upload your Address Proof!`);
+        }
+        if(!dob){
+            return toast.error(`Please enter your Date of Birth!`);
+        }
+        if(!openingDate){
+            return toast.error(`Please enter your Opening Date!`);
+        }
+
+
+        let dob_day = dob.getDate();
+        let dob_month = dob.getMonth() + 1;
+        let dob_year = dob.getFullYear();
+        const dob_date = (`${dob_day}-${dob_month}-${dob_year}`);
+
+        let opening_day = openingDate.getDate();
+        let opening_month = openingDate.getMonth() + 1;
+        let opening_year = openingDate.getFullYear();
+        const opening_date = (`${opening_day}-${opening_month}-${opening_year}`);
+        
+        const customerInfo = {
+            name: data.name,
+            father_name: data.father_name,
+            mobile_no: data.mobile_no,
+            aadhar_no: data.aadhar_no,
+            pan_no: data.pan_no,
+            dob: dob_date,
+            photo: photo,
+            id_proof: idProof,
+            address_proof: addressProof,
+            opening_date: opening_date,
+            full_address: data.full_address
+        };
+        const loading = toast.loading('Uploading...Please wait!');
+        axios.post('http://localhost:8009/api/v1/user', customerInfo)
             .then(res => {
-                if (res.data.insertedId) {
+                if (res.data.status == "success") {
+                    console.log(res.data)
                     toast.success('Added', {
                         id: loading,
                     });
+                    console.log("sucesssful")
                     reset();
-                    return swal("Successfully Added!", "Your car has been successfully added.", "success");
+                    //  swal("Successfully Added!", "Your car has been successfully added.", "success");
+                    swal({
+                        title: "Successfully Added!",
+                        text: "Your customer has been successfully added.",
+                        icon: "success",
+                        button: "OK!",
+                      })
+                      .then((value) => {
+                          window.location.reload();
+                      })
                 }
             })
     }
@@ -75,7 +144,7 @@ const AddCarDetails = () => {
                                         className="our-form-input"
                                         type="text"
                                         defaultValue=""
-                                        {...register("name", { required: true })}
+                                        {...register("father_name", { required: true })}
                                         placeholder="Enter Customer Father Name"
                                     />
                                 </Col>
@@ -85,7 +154,7 @@ const AddCarDetails = () => {
                                         type="number"
                                         className="our-form-input"
                                         defaultValue=""
-                                        {...register("mileage", { required: true })}
+                                        {...register("mobile_no", { required: true })}
                                         placeholder="Enter Customer Mobile Number"
                                     />
                                 </Col>
@@ -95,7 +164,7 @@ const AddCarDetails = () => {
                                         type="number"
                                         className="our-form-input"
                                         defaultValue=""
-                                        {...register("mileage", { required: true })}
+                                        {...register("aadhar_no", { required: true })}
                                         placeholder="Enter Aadhar No"
                                     />
                                 </Col>
@@ -103,26 +172,21 @@ const AddCarDetails = () => {
                                     <label>PAN No</label>
                                     <input
                                         className="our-form-input"
-                                        type="number"
+                                        type="text"
                                         defaultValue=""
-                                        {...register("price", { required: true })}
+                                        {...register("pan_no", { required: true })}
                                         placeholder="Enter PAN Card No"
                                     />
                                 </Col>
                                 <Col md={4} sm={12}>
                                     <label>Date of Birth</label>
-                                    <input
-                                        className="our-form-input"
-                                        type="date"
-                                        defaultValue=""
-                                        {...register("dob", { required: true })}
-                                        placeholder="Car Price"
-                                    />
+                                    <DatePicker className="our-form-input" onChange={setDOB} value={dob} />
+                                    
                                 </Col>
                             </Row>
                             <Row>
-                                
-                                
+
+
                                 <Col md={4} sm={12} className='mt-1'>
                                     <label>Customer Photo</label>
                                     <Button
@@ -137,15 +201,21 @@ const AddCarDetails = () => {
                                         type="file"
                                         id="upload"
                                         hidden="hidden"
-                                        {...register("img")}
+                                        // {...register("img")}
+                                        onChange={(e) => {uploadFile(e, "photo")}}
                                         placeholder="Upload Photo"
                                     />
+                                    {photo &&
+                                        <div className='m-2'>
+                                            <img src={photo} alt="" width={100} height={100} />
+                                        </div>
+                                    }
                                 </Col>
                                 <Col md={4} sm={12} className='mt-1'>
                                     <label>Customer ID Proof</label>
                                     <Button
                                         as={"label"}
-                                        htmlFor="upload"
+                                        htmlFor="id-proof"
                                         variant="outline-primary"
                                         className="d-block p-2 upload-btn">
                                         <FontAwesomeIcon icon={faCloudUploadAlt} className="mr-2" />Upload Image
@@ -153,17 +223,23 @@ const AddCarDetails = () => {
                                     <input
                                         className="our-form-input"
                                         type="file"
-                                        id="upload"
+                                        id="id-proof"
                                         hidden="hidden"
-                                        {...register("img")}
+                                        // {...register("id_proof")}
+                                        onChange={(e) => {uploadFile(e, "idProof")}}
                                         placeholder="Upload Photo"
                                     />
+                                    {idProof &&
+                                        <div className='m-2'>
+                                            <img src={idProof} alt="" width={100} height={100} />
+                                        </div>
+                                    }
                                 </Col>
                                 <Col md={4} sm={12} className='mt-1'>
                                     <label>Customer Address Proof</label>
                                     <Button
                                         as={"label"}
-                                        htmlFor="upload"
+                                        htmlFor="address-proof"
                                         variant="outline-primary"
                                         className="d-block p-2 upload-btn">
                                         <FontAwesomeIcon icon={faCloudUploadAlt} className="mr-2" />Upload Image
@@ -171,35 +247,35 @@ const AddCarDetails = () => {
                                     <input
                                         className="our-form-input"
                                         type="file"
-                                        id="upload"
+                                        id="address-proof"
                                         hidden="hidden"
-                                        {...register("img")}
+                                        // {...register("id_proof")}
+                                        onChange={(e) => {uploadFile(e, "addressProof")}}
                                         placeholder="Upload Photo"
                                     />
+                                    {addressProof &&
+                                        <div className='m-2'>
+                                            <img src={addressProof} alt="" width={100} height={100} />
+                                        </div>
+                                    }
                                 </Col>
                             </Row>
-                            <Row className='mt-1'>  
-                            <Col md={6} sm={12}>
+                            <Row className='mt-1'>
+                                <Col md={4} sm={12}>
                                     <label>Opening Date</label>
-                                    <input
+                                    <DatePicker className="our-form-input" onChange={setOpeningDate} value={openingDate} />
+                                </Col>
+                                <Col md={8} sm={12}>
+                                    <label>Customer Full Address</label>
+                                    <textarea
+                                        type="textarea"
+                                        style={{ height: '100px' }}
                                         className="our-form-input"
-                                        type="date"
                                         defaultValue=""
-                                        {...register("price", { required: true })}
-                                        placeholder="Car Price"
+                                        {...register("full_address", { required: true })}
+                                        placeholder="Enter Address"
                                     />
-                            </Col>
-                            <Col md={6} sm={12}>
-                            <label>Customer Full Address</label>
-                            <textarea
-                                type="textarea"
-                                style={{ height: '100px' }}
-                                className="our-form-input"
-                                defaultValue=""
-                                {...register("details", { required: true })}
-                                placeholder="Enter Address"
-                            />
-                            </Col>
+                                </Col>
                             </Row>
                             <br />
                             {/* <Button type="submit">Send</Button> */}

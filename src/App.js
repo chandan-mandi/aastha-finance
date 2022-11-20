@@ -13,6 +13,7 @@ import AddStaff from './components/UserDashboard/AddStaff/AddStaff';
 import Delivery from './components/UserDashboard/Delivery/Delivery';
 import ChangePassword from './components/UserDashboard/ChangePassword/ChangePassword';
 import DepositMaster from './components/UserDashboard/DepositMaster/DepositMaster';
+import AcStatement from './components/UserDashboard/Payment/AcStatement';
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
           <Route path="/dashboard/add-admin/fiil-up-details" element={<AddAdminForm />}></Route>
           <Route path="/dashboard/booking-details" element={<BookingDetails />}></Route>
           <Route path="/dashboard/payment" element={<Payment />}></Route>
+          <Route path="/dashboard/payment/ac-statement/:id" element={<AcStatement />}></Route>
           <Route exact path="/dashboard/new-order" element={<NewOrder />}>
           </Route>
           <Route path={`/dashboard/new-order/update/:id`} element={<DepositMaster />}> </Route>

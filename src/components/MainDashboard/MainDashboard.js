@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
-import logo from '../../assets/images/astha fin logo.png';
+import logo from '../../assets/images/aashtha_finance-logo.png';
 import ProfilePopper from '../../components/ProfilePopper/ProfilePopper';
 import './MainDashboard.css';
 
@@ -10,7 +10,7 @@ const MainDashboard = () => {
     const [isActive, setActive] = useState(false);
     const { pathname } = useLocation();
     const lastSegment = pathname.split("/").pop();
-    console.log(lastSegment)
+    console.log("last segment:- ",lastSegment)
     const handleToggle = () => {
         setActive(!isActive)
     }
@@ -41,7 +41,7 @@ const MainDashboard = () => {
                                 <Link to={`/dashboard/booking-details`}>
                                     <span className="icon">
                                         <div className="notify-box">
-                                        <i class="fa-solid fa-book-open"></i>
+                                        <i class="fa-solid fa-user-plus"></i>
                                         </div>
                                     </span>
                                     <span className="title">Create Customer</span>
@@ -51,8 +51,8 @@ const MainDashboard = () => {
                                 <Link to={`/dashboard/new-order`}>
                                     <span className="icon">
                                         <div className="notify-box">
-                                            <i class="fa-solid fa-bag-shopping faIcon"></i>
-
+                                            {/* <i class="fa-solid fa-bag-shopping faIcon"></i> */}
+                                            <i class="fa-solid fa-person-circle-check"></i>
                                         </div>
                                     </span>
                                     <span className="title">Deposit Master</span>
@@ -62,13 +62,13 @@ const MainDashboard = () => {
                                 <Link to={`/dashboard/payment`}>
                                     <span className="icon">
                                         <div className="notify-box">
-                                        <i class="fa-regular fa-file-lines"></i>
+                                        <i class="fa-solid fa-wallet"></i>
                                         </div>
                                     </span>
                                     <span className="title">Cash Collection</span>
                                 </Link>
                             </li>
-                            <li>
+                            {/* <li>
                                 <Link to={`/dashboard/payment`}>
                                     <span className="icon">
                                     <div className="notify-box">
@@ -107,10 +107,10 @@ const MainDashboard = () => {
                                     </span>
                                     <span className="title">Delivery</span>
                                 </Link>
-                            </li>
+                            </li> */}
                         </>}
                         {admin && <>
-                            <li>
+                            {/* <li>
                                 <Link to={`/dashboard/add-staff`}>
                                     <span className="icon">
                                         <div className="notify-box">
@@ -149,7 +149,7 @@ const MainDashboard = () => {
                                     </span>
                                     <span className="title">Customer Support</span>
                                 </Link>
-                            </li>
+                            </li> */}
                             <li>
                                 <Link to={`/dashboard/change-password`}>
                                     <span className="icon">

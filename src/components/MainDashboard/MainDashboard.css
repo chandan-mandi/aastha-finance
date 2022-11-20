@@ -10,7 +10,7 @@
     position: fixed;
     width: 300px;
     height: 100%;
-    background: #fff;
+    background: #dfb8b8;
     transition: 0.5s;
     overflow: auto;
 }
@@ -321,7 +321,7 @@
 .payment table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 10px;
+    /* margin-top: 10px; */
     border: 1px solid #EEE3EB;
 }
 .payment table thead td {
@@ -833,3 +833,12 @@ i.circle-icon {
 /* add padding  */
 .left-addon input  { padding-left:  30px; }
 .right-addon input { padding-right: 30px; }
+
+.installment-table {
+    width: auto;
+    height: 250px;
+    border: 1px solid #eee3e3;
+    overflow: auto;
+}
+
+/* date picker styles */

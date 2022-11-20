@@ -8,8 +8,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCloudUploadAlt } from '@fortawesome/free-solid-svg-icons';
 import { useLocation } from 'react-router-dom';
 import Calculator from './Calculator';
-import CalculatorHookForm from './CalculatorHookForm';
-import CalculatorForm from './CalculatorForm';
 import InterestCalculator from './InterestCalculator';
 
 const DepositMaster = () => {
@@ -61,8 +59,8 @@ const DepositMaster = () => {
         <div >
             <div className='m-1'>
             {/* <Calculator /> */}
-            <InterestCalculator />
-            <h2>Customer Details {location.state.id}</h2>
+            <InterestCalculator userDetail={location.state.userId}/>
+            <h2>Customer Details {location.state.userId._id}</h2>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="form-main" style={{ borderRadius: "15px", maxWidth: '85rem' }}>
                     <Row className='deposit-master'>
@@ -73,7 +71,7 @@ const DepositMaster = () => {
                                     <input
                                         className="our-form-input"
                                         type="text"
-                                        defaultValue={location.state.userId.requested_by}
+                                        defaultValue={location.state.userId.name}
                                         disabled
                                     />
                                 </Col>
@@ -91,7 +89,7 @@ const DepositMaster = () => {
                                     <input
                                         type="number"
                                         className="our-form-input"
-                                        defaultValue={location.state.userId.phone_no}
+                                        defaultValue={location.state.userId.mobile_no}
                                         disabled
                                     />
                                 </Col>
@@ -152,7 +150,7 @@ const DepositMaster = () => {
                                     <input
                                         className="our-form-input"
                                         type="text"
-                                        defaultValue={location.state.userId.order_date}
+                                        defaultValue={location.state.userId.opening_date}
                                         disabled
                                     />
                             </Col>
@@ -162,7 +160,7 @@ const DepositMaster = () => {
                                 type="textarea"
                                 style={{ height: '100px' }}
                                 className="our-form-input"
-                                defaultValue={location.state.userId.address}
+                                defaultValue={location.state.userId.full_address}
                                 disabled
                             />
                             </Col>
@@ -178,7 +176,6 @@ const DepositMaster = () => {
             </form>
             {/* <CalculatorForm /> */}
             
-            {/* <CalculatorHookForm /> */}
         </div>
         </div>
     );

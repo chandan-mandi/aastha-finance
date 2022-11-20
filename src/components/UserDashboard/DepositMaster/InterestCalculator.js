@@ -1,7 +1,11 @@
+import axios from 'axios';
 import React, { useState } from 'react';
 import { Col, Row, Button, Card, ListGroup } from 'react-bootstrap';
+import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
+import swal from 'sweetalert';
 
-const InterestCalculator = () => {
+const InterestCalculator = ({ userDetail }) => {
     const [p, setLoanAmount] = useState("");
     const [r, setRate] = useState("");
     const [t, setDuration] = useState("");
@@ -11,7 +15,8 @@ const InterestCalculator = () => {
     const [installment, setInstallment] = useState("");
     const [lastInstallment, setLastInstallment] = useState("");
     const [extraAmount, setExtraAmount] = useState("");
-    console.log("loanamout", p, r, t);
+    const { register, handleSubmit, reset } = useForm();
+
 
     const calculate = () => {
         const monthlyCalculate = t / 12;
@@ -19,9 +24,9 @@ const InterestCalculator = () => {
         const dayWiseCalculate = t / 365;
         let simpleInterest = durationType === "in-days" ? (p * r * dayWiseCalculate) / 100 : durationType === "monthly" ? (p * r * monthlyCalculate) / 100 : durationType === "weekly" ? (p * r * weeklyCalculate) / 100 : (p * r * t) / 100;
         let amount = Number(p) + Number(simpleInterest);
-        setTotalInterest(simpleInterest);
-        setTotalAmount(amount);
-        setInstallment(Number(amount) / t);
+        setTotalInterest(Math.ceil(simpleInterest));
+        setTotalAmount(Math.ceil(amount));
+        setInstallment(Math.ceil(Number(amount) / t));
         const extraInstallmentAmount = Math.ceil(Number(amount) / t) * t - Math.ceil(amount);
         setExtraAmount(extraInstallmentAmount);
         const lastEMI = Math.ceil(Number(amount) / t) - extraInstallmentAmount;
@@ -36,18 +41,180 @@ const InterestCalculator = () => {
         // calculate();
         console.log("type", e.target.value)
     }
+
+    const onSubmit = (data) => {
+        console.log(typeof (data.principal))
+        console.log(typeof (p))
+
+        // installment date creation
+        const date = new Date();
+
+        let day = date.getDate();
+        let month = date.getMonth() + 1;
+        let year = date.getFullYear();
+
+        // This arrangement can be altered based on how we want the date's format to appear.
+        let currentDate = `${day}-${month}-${year}`;
+        const pad = (num) => {
+            num = num.toString();
+            while (num.length < 2) num = "0" + num;
+            return num;
+        }
+        let inst_dates = [currentDate];
+        for (let i = 0; i < t-1; i++) {
+            let day = Number(inst_dates[i]?.slice(0, 2));
+            let month = Number(inst_dates[i]?.slice(3, 5));
+            let year = Number(inst_dates[i]?.slice(6, 10));
+            console.log('month', month)
+            if (month == 2 || month == 4 || month == 6) {
+                const monthWithZero = pad(month)
+                if (day <= 24) {
+                    if (day < 10) {
+                        const newDate = pad(day + 7)
+                        inst_dates.push(`${newDate}-${monthWithZero}-${year}`);
+                    } else {
+                        inst_dates.push(`${day + 7}-${monthWithZero}-${year}`);
+                    }
+                }
+                else {
+                    const latest_day = 7 - (30 - day);
+                    const newDate = pad(latest_day)
+                    const nextMonth = "0" + (month + 1);
+                    inst_dates.push(`${newDate}-${nextMonth}-${year}`);
+                }
+            }
+            else if (month == 9) {
+                const monthWithZero = pad(month)
+                if (day <= 24) {
+                    if (day < 10) {
+                        const newDate = pad(day + 7)
+                        inst_dates.push(`${newDate}-${monthWithZero}-${year}`);
+                    } else {
+                        inst_dates.push(`${day + 7}-${monthWithZero}-${year}`);
+                    }
+                }
+                else {
+                    const latest_day = 7 - (30 - day);
+                    const newDate = pad(latest_day)
+                    const nextMonth = (month + 1);
+                    inst_dates.push(`${newDate}-${nextMonth}-${year}`);
+                }
+            }
+            else if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8) {
+                const monthWithZero = pad(month)
+                if (day <= 24) {
+                    if (day < 10) {
+                        const newDate = pad(day + 7)
+                        inst_dates.push(`${newDate}-${monthWithZero}-${year}`);
+                    } else {
+                        inst_dates.push(`${day + 7}-${monthWithZero}-${year}`);
+                    }
+                }
+                else {
+                    const latest_day = 7 - (31 - day);
+                    const newDate = pad(latest_day);
+                    const nextMonth = pad(month + 1);
+                    inst_dates.push(`${newDate}-${nextMonth}-${year}`);
+                }
+            }
+            else if (month == 10) {
+                if (day <= 24) {
+                    if (day < 10) {
+                        const newDate = pad(day + 7)
+                        inst_dates.push(`${newDate}-${month}-${year}`);
+                    } else {
+                        inst_dates.push(`${day + 7}-${month}-${year}`);
+                    }
+                }
+                else {
+                    const latest_day = 7 - (30 - day);
+                    const newDate = pad(latest_day)
+                    inst_dates.push(`${newDate}-${month + 1}-${year}`);
+                }
+            }
+            else if (month == 11) {
+                if (day <= 23) {
+                    if (day < 10) {
+                        const newDate = pad(day + 7)
+                        inst_dates.push(`${newDate}-${month}-${year}`);
+                    } else {
+                        inst_dates.push(`${day + 7}-${month}-${year}`);
+                    }
+                }
+                else {
+                    const latest_day = 7 - (30 - day);
+                    const newDate = pad(latest_day)
+                    inst_dates.push(`${newDate}-${month + 1}-${year}`);
+                }
+            }
+            else if (month == 12) {
+                if (day <= 24) {
+                    if (day < 10) {
+                        const newDate = pad(day + 7)
+                        inst_dates.push(`${newDate}-${month}-${year}`);
+                    } else {
+                        inst_dates.push(`${day + 7}-${month}-${year}`);
+                    }
+                }
+                else {
+                    const latest_day = 7 - (31 - day);
+                    const newDate = pad(latest_day);
+                    const januaryMonth = "0" + 1;
+                    inst_dates.push(`${newDate}-${januaryMonth}-${year + 1}`);
+                }
+            }
+        }
+
+        console.log(inst_dates)
+        let inst_detail = [];
+        inst_dates.forEach(date => {
+            const obj = {"due_date": date, "due_amt": installment}
+            inst_detail.push(obj)
+        });
+        
+        const loan_data = {
+            principal_amount: Number(p),
+            interest_rate: Number(r),
+            loan_duration: Number(t),
+            loan_duration_type: durationType,
+            installments: inst_detail,
+            total_interest: totalInterest,
+            total_amt_with_interest: totalAmount,
+            installment_amount: installment,
+            last_installment: lastInstallment,
+            extra_amount: extraAmount
+        }
+        console.log("ins details", loan_data)
+        const loading = toast.loading('Uploading...Please wait!')
+        axios.post(`http://localhost:8009/api/v1/account?id=${userDetail._id}`, loan_data)
+            .then(res => {
+                if (res) {
+                    console.log("from server: ",res.data)
+                    toast.success('Added', {
+                        id: loading,
+                    });
+                    console.log("sucesssful")
+                    reset();
+                    return swal("Successfully Added!", "Your loan has been successfully approved.", "success");
+                }
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }
     return (
         <div className='mt-3'>
             <Row>
                 <Col md={7}>
-                    <form onSubmit={(e) => e.preventDefault()}>
+                    <form onSubmit={handleSubmit(onSubmit)}>
                         <Row>
                             <Col md={6} sm={12}>
                                 <label>Loan Amount</label>
                                 <input
-                                    type="text"
+                                    type="number"
                                     className="our-form-input"
                                     onInput={(e) => setLoanAmount(e.target.value)}
+                                    {...register("principal", { required: true })}
                                 />
                             </Col>
                             <Col md={6} sm={12}>

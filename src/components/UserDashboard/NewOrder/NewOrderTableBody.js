@@ -9,14 +9,14 @@ const NewOrderTableBody = ({order}) => {
         if (userId.id === 3445) {
             return swal("Permission restriction!", "As a test-admin, you don't have permission to delete 6 core services. But you can delete your added services.", "info");
         }
-        const uri = `update/${userId.id}`;
+        const uri = `update/${userId._id}`;
         navigate(uri, {state: {userId}});
     }
     return (
         <tbody>
             <tr onClick={() => updateHandler(order)}>
-                <td style={{textAlign: 'center'}}>#{order.id}</td>
-                <td>{order.requested_by}</td>
+                <td style={{textAlign: 'center'}}>#{order._id}</td>
+                <td>{order.name}</td>
                 <td>{order.phone_no}</td>
                 <td>{order.vehicle_issue}</td>
                 <td>{order.drive}</td>

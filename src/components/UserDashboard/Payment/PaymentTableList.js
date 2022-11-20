@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import PaymentTableBody from './PaymentTableBody';
 
 const PaymentTableList = () => {
@@ -86,6 +87,38 @@ const PaymentTableList = () => {
         },
     ]
     const [selectedPayment, setSelectedPayment] = useState("")
+    const [userDetails, setUserDetails] = useState([]);
+    const [customerDetails, setCustomerDetails] = useState([]);
+
+    useEffect(() => {
+        axios.get(`http://localhost:8009/api/v1/user`)
+            .then(res => {
+                const data = res.data.data;
+                setUserDetails(data)
+                // getFullData();
+            })
+    }, [])
+
+    const getFullData = async () => {
+        if (userDetails) {
+             userDetails.map(user => {
+                let fullDetails = [...user];
+                console.log(user.account_no)
+                axios.get(`http://localhost:8009/api/v1/account/${user.account_no}`)
+                    .then(res => {
+                        const accountDetail = res.data.data[0];
+                        // console.log('ac detal', accountDetail)
+                        fullDetails.push(accountDetail )
+
+                        // setCustomerDetails(fullDetails)
+                    });
+                // console.log("result", fullDetails);
+                // const result = await Promise.all(fullDetails);
+                // return result
+            })
+        }
+    }
+
     // handler selected admin
     const handleSelectPayment = (e, id) => {
         console.log(e.target.checked, id);
@@ -96,7 +129,7 @@ const PaymentTableList = () => {
             <table>
                 <thead>
                     <tr style={{ fontWeight: "700" }}>
-                        <td style={{textAlign: 'center'}}>User ID</td>
+                        <td style={{ textAlign: 'center' }}>User ID</td>
                         <td>Requested by</td>
                         <td>Phone no</td>
                         <td>Registration no</td>
@@ -106,8 +139,8 @@ const PaymentTableList = () => {
                     </tr>
                 </thead>
                 {
-                    payments.map(payment => (
-                        <PaymentTableBody key={payment.id} payment={payment} handleSelectAdmin={handleSelectPayment} selectedAdmin={selectedPayment}/>
+                    userDetails.map(payment => (
+                        <PaymentTableBody key={payment._id} payment={payment} handleSelectAdmin={handleSelectPayment} selectedAdmin={selectedPayment} />
                     ))}
             </table>
         </div>
