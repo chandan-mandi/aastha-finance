@@ -34,32 +34,64 @@ const CashTransaction = () => {
     }, [selectAc, updatedAc])
 
     const onSubmit = (data) => {
-
-        let day = value.getDate();
-        let month = value.getMonth() + 1;
-        let year = value.getFullYear();
-        const pay_date = (`${day}-${month}-${year}`);
-        let due_day = dueDate.getDate();
-        let due_month = dueDate.getMonth() + 1;
-        let due_year = dueDate.getFullYear();
-        const due_date = (`${due_day}-${due_month}-${due_year}`);
-        console.log('pay-date', pay_date)
-        // const due_date= "12-11-2022"
-        const cashCollection = {
-            due_date: due_date,
-            pay_date: pay_date,
-            pay_amt: data.pay_amt,
-            remarks: data.remarks,
-            collector: data.collector
-        }
-        axios.patch(`https://micro-finserv.herokuapp.com/api/v1/account/${selectAc}`, cashCollection)
-        .then(res => {
-            console.log(res.data)
-            if(res.data.status = 'success'){
-                setUpdatedAc(true)
-                return swal("Successfully Updated!", "Your account has been successfully updated.", "success");
+        swal({
+            title: "Are you sure?",
+            text: "Once updated, you will not be able to edit this imaginary file!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          })
+          .then((willUpdate) => {
+            if (willUpdate) {
+                let day = value.getDate();
+                let month = value.getMonth() + 1;
+                let year = value.getFullYear();
+                const pay_date = (`${day}-${month}-${year}`);
+                let due_day = dueDate.getDate();
+                let due_month = dueDate.getMonth() + 1;
+                let due_year = dueDate.getFullYear();
+                const due_date = (`${due_day}-${due_month}-${due_year}`);
+                console.log('pay-date', pay_date)
+                // const due_date= "12-11-2022"
+                const cashCollection = {
+                    due_date: due_date,
+                    pay_date: pay_date,
+                    pay_amt: data.pay_amt,
+                    remarks: data.remarks,
+                    collector: data.collector
+                }
+                axios.patch(`https://micro-finserv.herokuapp.com/api/v1/account/${selectAc}`, cashCollection)
+                .then(res => {
+                    console.log(res.data)
+                    if(res.data.status = 'success'){
+                        setUpdatedAc(true);
+                        const customerMobileNo = {
+                            number: selectCustomer.mobile_no.toString(),
+                            message: `Hello ${selectCustomer.name}, thank you for your co-operation. We confirmed that we got your Rs.${data.pay_amt} payment. --- From Aastha Finance`
+                        }
+                        console.log("mobileno", customerMobileNo);
+                        axios.post(`http://localhost:3000/api/v1/sendMessage/`, customerMobileNo)
+                        .then(res => {
+                            console.log("message res", res)
+                            if(res.data.return){
+                                return swal("Successfully Updated!", "Your account has been successfully updated and Message sent.", "success");
+                            } else {
+                                return swal({
+                                    title: "Something Wrong",
+                                    text: `${res.data.message}`,
+                                    icon: "warning",
+                                    dangerMode: true,
+                                  });
+                            }
+                        })
+                    }
+                })
+                
+            } else {
+              swal("Your imaginary file is safe!");
             }
-        })
+          });
+        
 
     }
 
