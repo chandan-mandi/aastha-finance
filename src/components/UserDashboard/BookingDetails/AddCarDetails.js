@@ -98,7 +98,7 @@ const AddCarDetails = () => {
             full_address: data.full_address
         };
         const loading = toast.loading('Uploading...Please wait!');
-        axios.post('https://micro-finserv.herokuapp.com/api/v1/user', customerInfo)
+        axios.post('https://micro-finserv-sever-chandan-mandi.vercel.app/api/v1/user', customerInfo)
             .then(res => {
                 if (res.data.status == "success") {
                     console.log(res.data)

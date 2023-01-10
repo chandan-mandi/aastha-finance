@@ -4,12 +4,13 @@ import { Col, Row, Button, Card, ListGroup } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import swal from 'sweetalert';
+import AcDetailsBox from './AcDetailsBox';
 
 const InterestCalculator = ({ userDetail }) => {
     const [p, setLoanAmount] = useState("");
     const [r, setRate] = useState("");
     const [t, setDuration] = useState("");
-    const [durationType, setDurationType] = useState("");
+    const [durationType, setDurationType] = useState("monthly");
     const [totalInterest, setTotalInterest] = useState("");
     const [totalAmount, setTotalAmount] = useState("");
     const [installment, setInstallment] = useState("");
@@ -45,10 +46,20 @@ const InterestCalculator = ({ userDetail }) => {
     const onSubmit = (data) => {
         console.log(typeof (data.principal))
         console.log(typeof (p))
+        if(!t.length){
+            toast.error("please enter duration")
+            return
+        } else if (!p){
+            toast.error("Please enter Loan Amount")
+            return
+        } else if(!r){
+            toast.error("Please enter Rate of Interest")
+            return
+        }
+        const loading = toast.loading('Uploading...Please wait!')
 
         // installment date creation
         const date = new Date();
-
         let day = date.getDate();
         let month = date.getMonth() + 1;
         let year = date.getFullYear();
@@ -60,7 +71,8 @@ const InterestCalculator = ({ userDetail }) => {
             while (num.length < 2) num = "0" + num;
             return num;
         }
-        let inst_dates = [currentDate];
+        // let inst_dates = [currentDate];
+        let inst_dates = ["7-1-2023", "14-1-2023", "21-1-2023"];
         for (let i = 0; i < t-1; i++) {
             let day = Number(inst_dates[i]?.slice(0, 2));
             let month = Number(inst_dates[i]?.slice(3, 5));
@@ -165,7 +177,7 @@ const InterestCalculator = ({ userDetail }) => {
             }
         }
 
-        console.log(inst_dates)
+        console.log("created ins dates",inst_dates)
         let inst_detail = [];
         inst_dates.forEach(date => {
             const obj = {"due_date": date, "due_amt": installment}
@@ -182,11 +194,12 @@ const InterestCalculator = ({ userDetail }) => {
             total_amt_with_interest: totalAmount,
             installment_amount: installment,
             last_installment: lastInstallment,
-            extra_amount: extraAmount
+            extra_amount: extraAmount,
+            user_id: userDetail._id
         }
-        console.log("ins details", loan_data)
-        const loading = toast.loading('Uploading...Please wait!')
-        axios.post(`https://micro-finserv.herokuapp.com/api/v1/account?id=${userDetail._id}`, loan_data)
+        console.log("ins loan details", loan_data)
+        
+        axios.post(`https://micro-finserv-sever-chandan-mandi.vercel.app/api/v1/account?id=${userDetail._id}`, loan_data)
             .then(res => {
                 if (res) {
                     console.log("from server: ",res.data)
@@ -205,7 +218,7 @@ const InterestCalculator = ({ userDetail }) => {
     return (
         <div className='mt-3'>
             <Row>
-                <Col md={7}>
+                <Col md={3}>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <Row>
                             <Col md={6} sm={12}>
@@ -218,25 +231,6 @@ const InterestCalculator = ({ userDetail }) => {
                                 />
                             </Col>
                             <Col md={6} sm={12}>
-                                <label>Interest Rate</label>
-                                <input
-                                    type="text"
-                                    className="our-form-input"
-                                    onInput={(e) => setRate(e.target.value)}
-                                />
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col md={6} sm={12}>
-                                <label>Duration</label>
-                                <input
-                                    type="text"
-                                    className="our-form-input"
-                                    onInput={(e) => setDuration(e.target.value)}
-                                    onKeyUp={calculate}
-                                />
-                            </Col>
-                            <Col md={6} sm={12}>
                                 <label>Duration Type</label>
                                 <select className="our-form-input" value={durationType} onChange={handleChangeDurationType} >
                                     <option value="yearly">yearly</option>
@@ -246,6 +240,25 @@ const InterestCalculator = ({ userDetail }) => {
                                 </select>
                             </Col>
                         </Row>
+                        <Row>
+                            <Col md={6} sm={12}>
+                                <label>Interest Rate</label>
+                                <input
+                                    type="text"
+                                    className="our-form-input"
+                                    onInput={(e) => setRate(e.target.value * 12)}
+                                />
+                            </Col>
+                            <Col md={6} sm={12}>
+                                <label>Duration</label>
+                                <input
+                                    type="text"
+                                    className="our-form-input"
+                                    onInput={(e) => setDuration(e.target.value)}
+                                    onKeyUp={calculate}
+                                />
+                            </Col>
+                        </Row>
                         <div className="text-center mt-4">
                             <Button type="submit" className="btn-main" style={{ padding: ".68rem 2rem" }}>
                                 Loan Approved
@@ -253,16 +266,16 @@ const InterestCalculator = ({ userDetail }) => {
                         </div>
                     </form>
                 </Col>
-                <Col md={5}>
+                <Col md={3}>
                     <div>
-                        <Card style={{ width: '18rem' }}>
+                        <Card style={{ width: '16rem' }}>
                             <Card.Header>Loan Calculate</Card.Header>
                             <ListGroup variant="flush">
                                 <ListGroup.Item className='d-flex justify-content-between'>Principal Amount : <span className='right-side'> {Number(p)} </span></ListGroup.Item>
                                 <ListGroup.Item className='d-flex justify-content-between'>Total Interest:<span> {Number(totalInterest).toFixed(2)}</span></ListGroup.Item>
                                 <ListGroup.Item className='d-flex justify-content-between'>Total Amount :<span> {Number(totalAmount).toFixed(2)}</span></ListGroup.Item>
                                 <ListGroup.Item className='d-flex justify-content-between'>{durationType} Installment Amount :<span> {Math.ceil(installment)}</span></ListGroup.Item>
-                                <ListGroup.Item className='d-flex justify-content-between'> Extra Amount :<span> {extraAmount}</span></ListGroup.Item>
+                                <ListGroup.Item className='d-flex justify-content-between'> Extra Amount :<span> -{extraAmount}</span></ListGroup.Item>
                                 <ListGroup.Item className='d-flex justify-content-between'>Last Installment Amount :<span> {Math.ceil(lastInstallment)}</span></ListGroup.Item>
                             </ListGroup>
                         </Card>
@@ -272,6 +285,9 @@ const InterestCalculator = ({ userDetail }) => {
                         <h2>{durationType} Installment Amount : {Math.ceil(installment)} </h2>
                         <h3>Last Installment Amount : {Math.ceil(lastInstallment)}</h3> */}
                     </div>
+                </Col>
+                <Col md={6} sm={12} className="p-1">
+                    <AcDetailsBox userDetail={userDetail}/>
                 </Col>
             </Row>
         </div>

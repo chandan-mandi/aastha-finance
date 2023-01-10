@@ -224,7 +224,7 @@ const MainDashboard = () => {
                                 <div className="user">
                                     <ProfilePopper />
                                 </div>
-                                <h6>Mohit Patel</h6>
+                                <h6>Miraz</h6>
                                 <i class="fa-solid fa-angle-down"></i>
                             </div>
                         </div>

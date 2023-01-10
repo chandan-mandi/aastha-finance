@@ -842,3 +842,30 @@ i.circle-icon {
 }
 
 /* date picker styles */
+.user-doc-img img{
+    border-radius: 50%;
+}
+.btn.btn-round {
+    border-radius: 40px;
+}
+
+.btn.btn-secondary {
+    color: #fff;
+    border-color: #8bbabb;
+    background: #33898a;
+    font-size: 14px;
+    padding: 0.58rem 3rem !important;
+}
+
+.btn.btn-secondary:hover, .btn.btn-secondary:focus {
+    border-color: #6ba7a8 !important;
+    background: #6ba7a8 !important;
+}
+.ledger-box {
+    border: 1px solid #eee3e3;
+    background: #e7e5e5;
+    border-radius: 5px;
+}
+.user-doc-img .img-box {
+    float: right;
+}

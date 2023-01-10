@@ -21,7 +21,7 @@ const DepositMaster = () => {
         const loading = toast.loading('Uploading...Please wait!')
         let imageURL = "";
         console.log(data.img[0])
-        if(data.img[0]){
+        if (data.img[0]) {
             const imageData = new FormData();
             imageData.set('key', 'acb2d4c7a68ef1bf06d396d73adb600a')
             imageData.append('image', data.img[0]);
@@ -57,126 +57,123 @@ const DepositMaster = () => {
     console.log(location.state.userId)
     return (
         <div >
-            <div className='m-1'>
-            {/* <Calculator /> */}
-            <InterestCalculator userDetail={location.state.userId}/>
-            <h2>Customer Details {location.state.userId._id}</h2>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <div className="form-main" style={{ borderRadius: "15px", maxWidth: '85rem' }}>
-                    <Row className='deposit-master'>
-                        <Col style={{ width: '1550px', margin: '0 auto' }} md={12} xs={12} className="pr-md-4">
-                            <Row>
-                                <Col md={4} sm={12}>
-                                    <label>Customer Name</label>
-                                    <input
-                                        className="our-form-input"
-                                        type="text"
-                                        defaultValue={location.state.userId.name}
-                                        disabled
-                                    />
-                                </Col>
-                                <Col md={4} sm={12}>
-                                    <label>Father Name</label>
-                                    <input
-                                        className="our-form-input"
-                                        type="text"
-                                        defaultValue={location.state.userId.father_name}
-                                        disabled
-                                    />
-                                </Col>
-                                <Col md={4} sm={12}>
-                                    <label>Mobile No</label>
-                                    <input
-                                        type="number"
-                                        className="our-form-input"
-                                        defaultValue={location.state.userId.mobile_no}
-                                        disabled
-                                    />
-                                </Col>
-                                <Col md={4} sm={12}>
-                                    <label>Aadhar No</label>
-                                    <input
-                                        type="number"
-                                        className="our-form-input"
-                                        defaultValue={location.state.userId.aadhar_no}
-                                        disabled
-                                    />
-                                </Col>
-                                <Col md={4} sm={12}>
-                                    <label>PAN No</label>
-                                    <input
-                                        className="our-form-input"
-                                        type="text"
-                                        defaultValue={location.state.userId.pan_no}
-                                        disabled
-                                    />
-                                </Col>
-                                <Col md={4} sm={12}>
-                                    <label>Date of Birth</label>
-                                    <input
-                                        className="our-form-input"
-                                        type="text"
-                                        defaultValue={location.state.userId.dob}
-                                        disabled
-                                    />
-                                </Col>
-                            </Row>
-                            <Row>
-                                
-                                
-                                <Col md={4} sm={12} className='mt-1'>
-                                    <label>Customer Photo</label>
-                                    <div>
-                                        <img src={location.state.userId.photo} alt="" width={200} height={200}/>
-                                    </div>
-                                </Col>
-                                <Col md={4} sm={12} className='mt-1'>
-                                <label>Customer ID Proof</label>
-                                    <div>
-                                        <img src={location.state.userId.id_proof} alt="" width={200} height={200}/>
-                                    </div>
-                                </Col>
-                                <Col md={4} sm={12} className='mt-1'>
-                                <label>Customer Address Proof</label>
-                                    <div>
-                                        <img src={location.state.userId.address_proof} alt="" width={200} height={200}/>
-                                    </div>
-                                </Col>
-                                
-                            </Row>
-                            <Row className='mt-1'>  
-                            <Col md={6} sm={12}>
-                                    <label>Opening Date</label>
-                                    <input
-                                        className="our-form-input"
-                                        type="text"
-                                        defaultValue={location.state.userId.opening_date}
-                                        disabled
-                                    />
-                            </Col>
-                            <Col md={6} sm={12}>
-                            <label>Customer Full Address</label>
-                            <textarea
-                                type="textarea"
-                                style={{ height: '100px' }}
-                                className="our-form-input"
-                                defaultValue={location.state.userId.full_address}
-                                disabled
-                            />
-                            </Col>
-                            </Row>
-                            <br />
-                            {/* <Button type="submit">Send</Button> */}
-                        </Col>
-                    </Row>
-                </div>
+            <div className='m-3'>
+                {/* <Calculator /> */}
+                <InterestCalculator userDetail={location.state.userId} />
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <div className="form-main" style={{ borderRadius: "15px", maxWidth: '85rem' }}>
+                        <Row className='deposit-master'>
+                            <Col style={{ width: '1550px', margin: '0 auto' }} md={12} xs={12} className="pr-md-4">
+                                <Row>
+                                    <Col md={4} sm={12}>
+                                        <label>Customer Name</label>
+                                        <input
+                                            className="our-form-input"
+                                            type="text"
+                                            defaultValue={location.state.userId.name}
+                                            disabled
+                                        />
+                                    </Col>
+                                    <Col md={4} sm={12}>
+                                        <label>Father Name</label>
+                                        <input
+                                            className="our-form-input"
+                                            type="text"
+                                            defaultValue={location.state.userId.father_name}
+                                            disabled
+                                        />
+                                    </Col>
+                                    <Col md={4} sm={12}>
+                                        <label>Mobile No</label>
+                                        <input
+                                            type="number"
+                                            className="our-form-input"
+                                            defaultValue={location.state.userId.mobile_no}
+                                            disabled
+                                        />
+                                    </Col>
+                                    <Col md={4} sm={12}>
+                                        <label>Aadhar No</label>
+                                        <input
+                                            type="number"
+                                            className="our-form-input"
+                                            defaultValue={location.state.userId.aadhar_no}
+                                            disabled
+                                        />
+                                    </Col>
+                                    <Col md={4} sm={12}>
+                                        <label>PAN No</label>
+                                        <input
+                                            className="our-form-input"
+                                            type="text"
+                                            defaultValue={location.state.userId.pan_no}
+                                            disabled
+                                        />
+                                    </Col>
+                                    <Col md={4} sm={12}>
+                                        <label>Date of Birth</label>
+                                        <input
+                                            className="our-form-input"
+                                            type="text"
+                                            defaultValue={location.state.userId.dob}
+                                            disabled
+                                        />
+                                    </Col>
+                                </Row>
+                                <Row className='user-doc-img'>
+                                    <Col md={4} sm={12} className='mt-1'>
+                                        <label>Customer Photo</label>
+                                        <div>
+                                            <img src={location.state.userId.photo} alt="" width={200} height={200} />
+                                        </div>
+                                    </Col>
+                                    <Col md={4} sm={12} className='mt-1'>
+                                        <label>Customer ID Proof</label>
+                                        <div>
+                                            <img src={location.state.userId.id_proof} alt="" width={200} height={200} />
+                                        </div>
+                                    </Col>
+                                    <Col md={4} sm={12} className='mt-1'>
+                                        <label>Customer Address Proof</label>
+                                        <div>
+                                            <img src={location.state.userId.address_proof} alt="" width={200} height={200} />
+                                        </div>
+                                    </Col>
 
-                
-                <Toaster />
-            </form>
-            {/* <CalculatorForm /> */}
-            
-        </div>
+                                </Row>
+                                <Row className='mt-1'>
+                                    <Col md={6} sm={12}>
+                                        <label>Opening Date</label>
+                                        <input
+                                            className="our-form-input"
+                                            type="text"
+                                            defaultValue={location.state.userId.opening_date}
+                                            disabled
+                                        />
+                                    </Col>
+                                    <Col md={6} sm={12}>
+                                        <label>Customer Full Address</label>
+                                        <textarea
+                                            type="textarea"
+                                            style={{ height: '100px' }}
+                                            className="our-form-input"
+                                            defaultValue={location.state.userId.full_address}
+                                            disabled
+                                        />
+                                    </Col>
+                                </Row>
+                                <br />
+                                {/* <Button type="submit">Send</Button> */}
+                            </Col>
+                        </Row>
+                    </div>
+
+
+                    <Toaster />
+                </form>
+                {/* <CalculatorForm /> */}
+
+            </div>
         </div>
     );
 };

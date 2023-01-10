@@ -9,7 +9,7 @@ const ProfilePopper = () => {
     const admin = true;
     const user = {
         displayName : "Chandan Mandi",
-        photoURL: "https://i.ibb.co/dbg2G1Q/1642359447115-2.png",
+        photoURL: "https://i.ibb.co/5YwYvWL/Whats-App-Image-2022-11-22-at-9-54-58-AM.jpg",
     }
     const { displayName: name, photoURL: img } = user;
     const signOut = () => {

@@ -8,7 +8,7 @@ const NewOrder = () => {
     return (
         <div className='add-padding new-order-section'>
             <div className="new-order-search d-flex">
-                <h4>New Order</h4>
+                <h4>Deposit Master</h4>
                 <div className="search">
                     <label>
                         <input type="text" style={{ backgroundColor: '#fafafab0' }} />

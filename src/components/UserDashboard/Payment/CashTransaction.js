@@ -3,15 +3,21 @@ import React, { useEffect, useState } from 'react';
 import { Col, Row, Button, Card, ListGroup } from 'react-bootstrap';
 import DatePicker from 'react-date-picker';
 import { useForm } from 'react-hook-form';
+import toast, { Toaster } from 'react-hot-toast';
 import swal from 'sweetalert';
 import InstallmentTableBody from './InstallmentTableBody';
+import LedgerTable from './LedgerTable';
 import ModalBox from './ModalBox';
+import ShowLedger from './ShowLedger';
+import ShowLedgerTable from './ShowLedgerTable';
 
 
 const CashTransaction = () => {
-    const [installmentDetail, setInstallments] = useState();
-    const [selectAc, setSelectAc] = useState("")
-    const [selectCustomer, setSelectCustomer] = useState([])
+    const [activeLedger, setActiveLedger] = useState(false);
+    const [installmentDetail, setInstallments] = useState("");
+    const [selectAc, setSelectAc] = useState("");
+    const [acDetail, setAcDetail] = useState("");
+    const [selectCustomer, setSelectCustomer] = useState("")
     const [loading, setLoading] = useState(true);
     const [updatedAc, setUpdatedAc] = useState(false);
     const [value, onChange] = useState(new Date());
@@ -24,74 +30,93 @@ const CashTransaction = () => {
     }
 
     useEffect(() => {
-        axios.get(`https://micro-finserv.herokuapp.com/api/v1/account/${selectAc}`)
+        axios.get(`https://micro-finserv-sever-chandan-mandi.vercel.app/api/v1/account/${selectAc}`)
             .then(res => {
                 const data = res.data.data;
-                setInstallments(data.installments)
+                setAcDetail(data);
+                setInstallments(data?.installments)
                 setLoading(false)
                 setUpdatedAc(false)
             })
     }, [selectAc, updatedAc])
-
+    console.log('show install', installmentDetail)
+    // ledger show handler 
+    const ledgerShowHandler = () => {
+        if(selectCustomer){
+            setActiveLedger(true)
+        }
+        else if(installmentDetail) {
+            toast.error("Please Choose a User with Account Details")
+        }
+        else {
+            toast.error("Please Choose a User!");
+        }
+    }
     const onSubmit = (data) => {
+        if(!data.pay_amt){
+            toast.error("Please enter Amount")
+            return
+        }
         swal({
             title: "Are you sure?",
             text: "Once updated, you will not be able to edit this imaginary file!",
             icon: "warning",
             buttons: true,
             dangerMode: true,
-          })
-          .then((willUpdate) => {
-            if (willUpdate) {
-                let day = value.getDate();
-                let month = value.getMonth() + 1;
-                let year = value.getFullYear();
-                const pay_date = (`${day}-${month}-${year}`);
-                let due_day = dueDate.getDate();
-                let due_month = dueDate.getMonth() + 1;
-                let due_year = dueDate.getFullYear();
-                const due_date = (`${due_day}-${due_month}-${due_year}`);
-                console.log('pay-date', pay_date)
-                // const due_date= "12-11-2022"
-                const cashCollection = {
-                    due_date: due_date,
-                    pay_date: pay_date,
-                    pay_amt: data.pay_amt,
-                    remarks: data.remarks,
-                    collector: data.collector
-                }
-                axios.patch(`https://micro-finserv.herokuapp.com/api/v1/account/${selectAc}`, cashCollection)
-                .then(res => {
-                    console.log(res.data)
-                    if(res.data.status = 'success'){
-                        setUpdatedAc(true);
-                        const customerMobileNo = {
-                            number: selectCustomer.mobile_no.toString(),
-                            message: `Hello ${selectCustomer.name}, thank you for your co-operation. We confirmed that we got your Rs.${data.pay_amt} payment. --- From Aastha Finance`
-                        }
-                        console.log("mobileno", customerMobileNo);
-                        axios.post(`http://localhost:3000/api/v1/sendMessage/`, customerMobileNo)
+        })
+            .then((willUpdate) => {
+                if (willUpdate) {
+                    let day = value.getDate();
+                    let month = value.getMonth() + 1;
+                    let year = value.getFullYear();
+                    const pay_date = (`${day}-${month}-${year}`);
+                    let due_day = dueDate.getDate();
+                    let due_month = dueDate.getMonth() + 1;
+                    let due_year = dueDate.getFullYear();
+                    const due_date = (`${due_day}-${due_month}-${due_year}`);
+                    console.log('pay-date', pay_date)
+                    // const due_date= "12-11-2022"
+                    const cashCollection = {
+                        due_date: due_date,
+                        pay_date: pay_date,
+                        pay_amt: data.pay_amt,
+                        remarks: data.remarks,
+                        collector: data.collector
+                    }
+                    console.log('cashcollection', cashCollection)
+                    axios.patch(`https://micro-finserv-sever-chandan-mandi.vercel.app/api/v1/account/${selectAc}`, cashCollection)
                         .then(res => {
-                            console.log("message res", res)
-                            if(res.data.return){
-                                return swal("Successfully Updated!", "Your account has been successfully updated and Message sent.", "success");
-                            } else {
-                                return swal({
-                                    title: "Something Wrong",
-                                    text: `${res.data.message}`,
-                                    icon: "warning",
-                                    dangerMode: true,
-                                  });
+                            console.log(res.data)
+                            if (res.data.status = 'success') {
+                                setUpdatedAc(true);
+                                const customerMobileNo = {
+                                    number: selectCustomer.mobile_no.toString(),
+                                    message: `Hello ${selectCustomer.name}, thank you for your co-operation. We confirmed that we got your Rs.${data.pay_amt} payment. --- Team Aastha Finance`,
+                                    // message: `Hi Customer, your A/c *****7845 Credited for Rs ${data.pay_amt} on ${pay_date} Under Ujjawala Yojana`,
+                                }
+                                console.log("mobileno", customerMobileNo);
+                                axios.post(`https://micro-finserv-sever-chandan-mandi.vercel.app/api/v1/sendMessage/`, customerMobileNo)
+                                    .then(res => {
+                                        console.log("message res", res)
+                                        if (res.data.return) {
+                                            return swal("Successfully Updated!", "Your account has been successfully updated and Message sent.", "success");
+                                        } else {
+                                            return swal({
+                                                title: "Something Wrong",
+                                                text: `${res.data.message}`,
+                                                icon: "warning",
+                                                dangerMode: true,
+                                            });
+                                        }
+                                    })
                             }
                         })
-                    }
-                })
-                
-            } else {
-              swal("Your imaginary file is safe!");
-            }
-          });
-        
+
+                } else {
+                    swal("Your imaginary file is safe!");
+                }
+            });
+
 
     }
 
@@ -206,10 +231,10 @@ const CashTransaction = () => {
             }
         }
     }
-    const accountSelectHanlder = (ac) => {
+    const accountSelectHanlder = (user, ac) => {
         console.log('ac no', ac)
-        setSelectAc(ac.account_no)
-        setSelectCustomer(ac)
+        setSelectAc(ac)
+        setSelectCustomer(user)
     }
 
     // console.log(text)
@@ -248,9 +273,9 @@ const CashTransaction = () => {
                                 </Col>
                             </Row>
                             <Row>
-                                
+
                                 <Col md={6} sm={12}>
-                                    <label>Pay Date</label>
+                                    <label>Collection Date</label>
                                     {/* <input
                                         type="date"
                                         className="our-form-input"
@@ -293,9 +318,10 @@ const CashTransaction = () => {
                                 </Button>
                             </div>
                         </form>
+
                     </Col>
                     <Col md={7} className='p-2'>
-                        <div className='installment-table'>
+                        {/* <div className='installment-table'>
                             <div>
                                 <table>
                                     <thead>
@@ -321,10 +347,22 @@ const CashTransaction = () => {
                                     }
                                 </table>
                             </div>
-                        </div>
+                        </div> */}
+                        <LedgerTable selectCustomer={selectCustomer} installmentDetail={installmentDetail} loading={loading}/>
+                        <Col md={6}>
+                            <Button type="button" onClick={ledgerShowHandler} className="btn mb-2 mb-md-0 btn-secondary btn-block btn-round mt-2" style={{ padding: ".68rem 2rem" }}>
+                                Ledger
+                            </Button>
+                        </Col>
                     </Col>
                 </Row>
             </div>
+            {
+                activeLedger && selectCustomer && installmentDetail &&
+            <ShowLedger selectCustomer={selectCustomer} installmentDetail={installmentDetail} loading={loading} acDetail={acDetail}/>
+            }
+            {/* <ShowLedgerTable selectCustomer={selectCustomer} installmentDetail={installmentDetail} loading={loading}/> */}
+            <Toaster />
         </div>
     );
 };

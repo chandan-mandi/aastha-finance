@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { ColorRing } from 'react-loader-spinner';
+import Loader from '../../Loader/Loader';
 import NewOrderTableBody from './NewOrderTableBody';
 
 const NewOrderTableList = () => {
@@ -97,31 +99,31 @@ const NewOrderTableList = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch(`https://micro-finserv.herokuapp.com/api/v1/user`)
-        .then(res => res.json())
-        .then(data => {
-            setUsers(data.data)
-            setLoading(false)
-        })
-    },[])
+        fetch(`https://micro-finserv-sever-chandan-mandi.vercel.app/api/v1/user`)
+            .then(res => res.json())
+            .then(data => {
+                setUsers(data.data)
+                setLoading(false)
+            })
+    }, [])
     // console.log(users)
     return (
         <div>
             <table>
                 <thead>
                     <tr style={{ fontWeight: "700", backgroundColor: '#FFF8F8' }}>
-                        <td style={{textAlign: 'center'}}>User ID</td>
+                        <td style={{ textAlign: 'center' }}>User ID</td>
                         <td>Customer Name</td>
                         <td>Phone no</td>
                         <td>Address</td>
                         <td>Father's Name</td>
-                        <td>Loan Amount</td>
+                        {/* <td>Loan Amount</td> */}
                         <td>Opening Date</td>
                     </tr>
                 </thead>
-                {
+                {loading ? <Loader/> :
                     ordersList.map(order => (
-                        <NewOrderTableBody key={order._id} order={order}/>
+                        <NewOrderTableBody key={order._id} order={order} />
                     ))}
             </table>
         </div>

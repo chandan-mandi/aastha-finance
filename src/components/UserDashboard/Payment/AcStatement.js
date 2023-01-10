@@ -7,7 +7,7 @@ const AcStatement = () => {
     const [acStatement, setAcStatement] = useState([]);
 
     useEffect(() => {
-        axios.get(`https://micro-finserv.herokuapp.com/api/v1/account/${id}`)
+        axios.get(`https://micro-finserv-sever-chandan-mandi.vercel.app/api/v1/account/${id}`)
         .then(res => {
             setAcStatement(res.data.data)
         })
